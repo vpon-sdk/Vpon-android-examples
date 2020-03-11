@@ -1,4 +1,4 @@
-package com.vpon.dfpexample;
+package com.vpon.admobexample;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,17 +8,18 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
-import com.google.android.gms.ads.doubleclick.PublisherAdRequest;
-import com.google.android.gms.ads.doubleclick.PublisherAdView;
-import com.google.android.gms.ads.doubleclick.PublisherInterstitialAd;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
 
 public class MainActivity extends AppCompatActivity {
 
-    private PublisherAdView adView;
-    private PublisherInterstitialAd interstitial;
-    private String MY_AD_UNIT_ID = "/6499/example/banner";//TODO SET YOUR AD_UNIT_ID here
-    private String MY_INTERSTITIAL_UNIT_ID = "/6499/example/interstitial";////TODO SET YOUR AD_UNIT_ID here
+    private AdView adView;
+    private InterstitialAd interstitial;
+    private String MY_AD_UNIT_ID = "ca-app-pub-3940256099942544/6300978111";//TODO SET YOUR AD_UNIT_ID here
+    private String MY_INTERSTITIAL_UNIT_ID = "ca-app-pub-3940256099942544/1033173712";////TODO SET YOUR AD_UNIT_ID here
     private LinearLayout adBannerLayout;
 
 
@@ -31,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        MobileAds.initialize(this);
 
         // button1 for banner and button for IS
         button1 = findViewById(R.id.button1);
@@ -50,11 +53,12 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Create an ad.
-        adView = new PublisherAdView(this);
-        adView.setAdSizes(AdSize.BANNER);
+
+        adView = new AdView(this);
+        adView.setAdSize(AdSize.BANNER);
         adView.setAdUnitId(MY_AD_UNIT_ID);
 
-        interstitial = new PublisherInterstitialAd(this);
+        interstitial = new InterstitialAd(this);
         interstitial.setAdUnitId(MY_INTERSTITIAL_UNIT_ID);
 
 
@@ -63,12 +67,10 @@ public class MainActivity extends AppCompatActivity {
         adBannerLayout = findViewById(R.id.container);
         adBannerLayout.addView(adView);
         // start loading the ad in the background
-
     }
 
     private void doBannerAd(){
-        PublisherAdRequest adRequest = new PublisherAdRequest.Builder()
-                .setManualImpressionsEnabled(true)
+        AdRequest adRequest = new AdRequest.Builder()
                 .build();
         adView.loadAd(adRequest);
         adView.setAdListener(new AdListener() {
@@ -96,8 +98,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void doInterstitialAd() {
-        PublisherAdRequest request = new PublisherAdRequest.Builder()
-                .setManualImpressionsEnabled(true)
+        AdRequest request = new AdRequest.Builder()
                 .build();
         interstitial.setAdListener(new AdListener() {
             @Override
