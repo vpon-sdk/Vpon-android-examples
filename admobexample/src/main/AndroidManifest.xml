@@ -24,7 +24,7 @@
         </activity>
 
         <activity
-            android:name="com.vpadn.widget.VpadnActivity"
+            android:name="com.vpon.ads.VponAdActivity"
             android:configChanges="orientation|keyboardHidden|navigation|keyboard|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:hardwareAccelerated="true"
             android:theme="@android:style/Theme.Translucent"></activity>
