@@ -1,4 +1,4 @@
-include ':dfpexample'
+include ':dfpexample', ':admob-adapter'
 rootProject.name='Vpon-android-examples'
 include ':admobexample'
 include ':vponexample'
