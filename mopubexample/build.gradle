@@ -1,23 +1,19 @@
-repositories {
-    google()
-    jcenter()
-    maven {
-        url 'https://dl.bintray.com/vpon-sdk/maven'
-    }
-}
 apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 29
+    buildToolsVersion "29.0.2"
 
     defaultConfig {
-        applicationId "com.vpon.admobexample"
-        minSdkVersion 18
+        applicationId "com.example.mopubexample"
+        minSdkVersion 19
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        multiDexEnabled true
     }
 
     buildTypes {
@@ -26,6 +22,20 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+}
+
+repositories {
+    jcenter() // includes the MoPub SDK and AVID library
+    maven { url "https://s3.amazonaws.com/moat-sdk-builds" }
+    maven {
+        url 'https://dl.bintray.com/vpon-sdk/maven'
+    }
 }
 
 dependencies {
@@ -33,13 +43,15 @@ dependencies {
 
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    testImplementation 'junit:junit:4.13'
+    testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
-    implementation 'com.google.android.gms:play-services-ads:19.0.0'
+    implementation('com.mopub:mopub-sdk:+@aar') {
+        transitive = true
+    }
 
-    implementation 'com.squareup.retrofit2:retrofit:2.6.2'
+    implementation 'com.google.android.gms:play-services-ads-identifier:17.0.0'
     implementation 'com.vpon:vpadnSDK:5.0.3'
-    implementation project(':admob-adapter')
+    implementation 'com.squareup.retrofit2:retrofit:2.6.2'
 }

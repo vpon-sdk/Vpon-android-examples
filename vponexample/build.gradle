@@ -41,5 +41,5 @@ dependencies {
     implementation 'com.google.android.gms:play-services-ads-identifier:17.0.0'
 
     implementation 'com.squareup.retrofit2:retrofit:2.6.2'
-    implementation 'com.vpon:vpadnSDK:5.0.2'
+    implementation 'com.vpon:vpadnSDK:5.0.3'
 }
