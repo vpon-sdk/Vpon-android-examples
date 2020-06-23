@@ -1,6 +1,4 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-
-    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -23,5 +21,11 @@
         android:layout_height="wrap_content"
         android:text="Native Ad"
         android:id="@+id/native_ad_button" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/container"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"/>
 
 </LinearLayout>

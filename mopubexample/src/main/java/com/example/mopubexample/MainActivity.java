@@ -27,7 +27,6 @@ import com.mopub.network.AdLoader;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.mopub.mobileads.VponBannerCustomEvent.AD_SIZE_KEY;
 
 public class MainActivity extends AppCompatActivity {
     private static final String LT = "MainActivity";
@@ -113,6 +112,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void doBannerAd() {
+        adLayout.removeAllViews();
+
         adView = new MoPubView(this);
 
         // Add the AdView to the view hierarchy. The view will have no size
@@ -153,9 +154,9 @@ public class MainActivity extends AppCompatActivity {
         adView.setAdSize(MoPubView.MoPubAdSize.HEIGHT_250);
 
         //set ad size info for vpon mediation adapter
-        Map<String, Object> localExtras = new HashMap<>();
-        localExtras.put(AD_SIZE_KEY, adView.getAdSize());
-        adView.setLocalExtras(localExtras);
+//        Map<String, Object> localExtras = new HashMap<>();
+//        localExtras.put(AD_SIZE_KEY, adView.getAdSize());
+//        adView.setLocalExtras(localExtras);
 
         adView.loadAd();
     }
@@ -197,6 +198,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void doNativeAd() {
+        adLayout.removeAllViews();
+
         moPubNative = new MoPubNative(this, MY_NATIVE_UNIT_ID, moPubNativeNetworkListener);
 
         ViewBinder viewBinder = new ViewBinder.Builder(R.layout.mopub_native_layout)
