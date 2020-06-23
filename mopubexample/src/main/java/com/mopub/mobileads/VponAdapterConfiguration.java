@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.mopub.common.BaseAdapterConfiguration;
 import com.mopub.common.OnNetworkInitializationFinishedListener;
+import com.vpon.ads.BuildConfig;
 
 import java.util.Map;
 
@@ -14,7 +15,7 @@ public class VponAdapterConfiguration extends BaseAdapterConfiguration {
     @NonNull
     @Override
     public String getAdapterVersion() {
-        return "v1.0.0";
+        return "v1.1.0";
     }
 
     @Nullable
@@ -32,7 +33,7 @@ public class VponAdapterConfiguration extends BaseAdapterConfiguration {
     @NonNull
     @Override
     public String getNetworkSdkVersion() {
-        return "5.0.0";
+        return BuildConfig.VERSION_NAME;
     }
 
     @Override
