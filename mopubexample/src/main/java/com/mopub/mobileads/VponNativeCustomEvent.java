@@ -2,12 +2,10 @@ package com.mopub.mobileads;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 
 import com.mopub.common.logging.MoPubLog;
 import com.mopub.nativeads.CustomEventNative;
-import com.mopub.nativeads.MoPubCustomEventNative;
 import com.mopub.nativeads.NativeErrorCode;
 import com.mopub.nativeads.NativeImageHelper;
 import com.mopub.nativeads.StaticNativeAd;
@@ -17,6 +15,7 @@ import com.vpon.ads.VponNativeAd;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +28,8 @@ public class VponNativeCustomEvent extends CustomEventNative {
     private final String LT = "VponNativeCustomEvent";
 
     private static final String AD_UNIT_ID_KEY = "adUnitID";
+    public static final String AD_CONTENT_URL = "contentURL";
+    public static final String AD_CONTENT_DATA = "contentData";
 
     private VponNativeAd vponNativeAd;
 
@@ -55,8 +56,20 @@ public class VponNativeCustomEvent extends CustomEventNative {
         }
 
         if (mNativeListener != null) {
-            VponStaticNativeAd vponStaticNativeAd = new VponStaticNativeAd(weakContext, new VponNativeAd(weakContext, adUnitId), mNativeListener);
-            vponStaticNativeAd.loadAd();
+            VponStaticNativeAd vponStaticNativeAd = new VponStaticNativeAd(weakContext
+                    , new VponNativeAd(weakContext, adUnitId), mNativeListener);
+
+            VponAdRequest.Builder builder = new VponAdRequest.Builder();
+
+            if (localExtras.get(AD_CONTENT_URL) instanceof String){
+                builder.setContentUrl((String) localExtras.get(AD_CONTENT_URL));
+            }
+
+            if (localExtras.get(AD_CONTENT_DATA) instanceof HashMap){
+                builder.setContentData((HashMap<String, Object>) localExtras.get(AD_CONTENT_DATA));
+            }
+
+            vponStaticNativeAd.loadAd(builder.build());
         }
     }
 
@@ -74,11 +87,10 @@ public class VponNativeCustomEvent extends CustomEventNative {
             this.context = context;
         }
 
-        public void loadAd() {
+        public void loadAd(VponAdRequest vponAdRequest) {
             vponNativeAd.setAdListener(new VponAdListener() {
                 @Override
                 public void onAdFailedToLoad(int errorCode) {
-                    Log.d(LT, "onAdFailedToLoad");
                     MoPubLog.log(LT, MoPubLog.AdLogEvent.LOAD_FAILED, "errorCode:" + errorCode);
                     if (nativeListener != null) {
                         nativeListener.onNativeAdFailed(mapVponErrorCodeToMoPubErrorCode(errorCode));
@@ -87,7 +99,7 @@ public class VponNativeCustomEvent extends CustomEventNative {
 
                 @Override
                 public void onAdLoaded() {
-                    Log.d(LT, "onAdLoaded");
+                    MoPubLog.log(LT, MoPubLog.AdLogEvent.LOAD_SUCCESS, "onAdLoaded");
                 }
             });
 
@@ -121,7 +133,9 @@ public class VponNativeCustomEvent extends CustomEventNative {
                     }
                 }
             });
-            vponNativeAd.loadAd(new VponAdRequest.Builder().build());
+
+
+            vponNativeAd.loadAd(vponAdRequest);
         }
 
         @Override
