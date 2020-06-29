@@ -27,6 +27,9 @@ import com.mopub.network.AdLoader;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.mopub.mobileads.VponBannerCustomEvent.AD_CONTENT_URL;
+import static com.mopub.mobileads.VponInterstitialCustomEvent.AD_CONTENT_DATA;
+
 
 public class MainActivity extends AppCompatActivity {
     private static final String LT = "MainActivity";
@@ -95,7 +98,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     private void mopubInit() {
         SdkConfiguration sdkConfiguration = new SdkConfiguration
                 .Builder(MY_BANNER_UNIT_ID)
@@ -153,10 +155,8 @@ public class MainActivity extends AppCompatActivity {
         //make sure you set correct AdSize for corresponding Ad Unit ID (MoPub format: Medium rectangle or Banner?)
         adView.setAdSize(MoPubView.MoPubAdSize.HEIGHT_250);
 
-        //set ad size info for vpon mediation adapter
-//        Map<String, Object> localExtras = new HashMap<>();
-//        localExtras.put(AD_SIZE_KEY, adView.getAdSize());
-//        adView.setLocalExtras(localExtras);
+        //optional, for setting content url & content url
+        adView.setLocalExtras(getExtraData());
 
         adView.loadAd();
     }
@@ -194,6 +194,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //optional, for setting content url & content url
+        interstitialAd.setLocalExtras(getExtraData());
+
         interstitialAd.load();
     }
 
@@ -214,6 +217,22 @@ public class MainActivity extends AppCompatActivity {
         MoPubStaticNativeAdRenderer moPubStaticNativeAdRenderer = new MoPubStaticNativeAdRenderer(viewBinder);
         moPubNative.registerAdRenderer(moPubStaticNativeAdRenderer);
 
+        //optional, for setting content url & content url
+        moPubNative.setLocalExtras(getExtraData());
+
         moPubNative.makeRequest();
+    }
+
+    private Map<String, Object> getExtraData(){
+        Map<String, Object> contentData = new HashMap<>();
+        contentData.put("key1", "MoPub");
+        contentData.put("key2", 1.2);
+        contentData.put("key3", true);
+
+        Map<String, Object> localExtras = new HashMap<>();
+        localExtras.put(AD_CONTENT_DATA, contentData);
+        localExtras.put(AD_CONTENT_URL, "https://www.vpon.com/zh-hant/");
+
+        return localExtras;
     }
 }
