@@ -25,8 +25,8 @@ import androidx.annotation.Nullable;
 import static com.mopub.common.logging.MoPubLog.AdapterLogEvent.LOAD_ATTEMPTED;
 import static com.mopub.mobileads.MoPubErrorCode.MISSING_AD_UNIT_ID;
 
-public class VponBannerAdAdapter extends BaseAd {
-    private static final String LT = "VponBannerAdAdapter";
+public class VponBannerCustomEvent extends BaseAd {
+    private static final String LT = "VponBannerCustomEvent";
     private VponBanner vponBanner;
 
     private String vponAdUnitID;
