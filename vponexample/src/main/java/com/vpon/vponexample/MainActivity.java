@@ -18,6 +18,8 @@ import com.vpon.ads.VponMediaView;
 import com.vpon.ads.VponMobileAds;
 import com.vpon.ads.VponNativeAd;
 
+import java.util.HashMap;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -112,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
             public void onAdLeftApplication() {
             }
         });
-        adView.loadAd(adRequest);
+        adView.loadAd(buildAdRequest());
     }
 
     private void doInterstitialAd() {
@@ -140,10 +142,35 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void doNativeAd() {
-        VponAdRequest request = new VponAdRequest.Builder()
-                .build();
         nativeAd.withNativeAdLoadedListener(onNativeAdLoadedListener);
-        nativeAd.loadAd(request);
+        nativeAd.loadAd(buildAdRequest());
+    }
+
+    @Override
+    protected void onPause() {
+        if (adView != null) {
+            adView.resume();
+        }
+
+        if (nativeAd != null){
+            nativeAd.resume();
+        }
+
+        super.onPause();
+    }
+
+
+    @Override
+    protected void onResume() {
+        if (adView != null) {
+            adView.resume();
+        }
+
+
+        if (nativeAd != null){
+            nativeAd.resume();
+        }
+        super.onResume();
     }
 
     /** Called before the activity is destroyed. */
@@ -154,7 +181,32 @@ public class MainActivity extends AppCompatActivity {
             adView.destroy();
             adView = null;
         }
+
+        if (nativeAd != null){
+            nativeAd.destroy();
+            nativeAd = null;
+        }
+
         super.onDestroy();
+    }
+
+    private VponAdRequest buildAdRequest(){
+        VponAdRequest.Builder builder = new VponAdRequest.Builder();
+
+        //this only works for banner
+        builder.setAutoRefresh(true);
+
+        //optional
+        HashMap<String, Object> contentData = new HashMap<>();
+        contentData.put("key1", "Vpon");
+        contentData.put("key2", 1.2);
+        contentData.put("key3", true);
+
+        builder.setContentData(contentData);
+        builder.setContentUrl("https://www.vpon.com/zh-hant/");
+        //
+
+        return builder.build();
     }
 
     private ImageView nativeAdIcon = null;
@@ -184,8 +236,8 @@ public class MainActivity extends AppCompatActivity {
         Button nativeAdCallToAction = adContainer.findViewById(R.id.ad_call_to_action);
         RatingBar nativeAdStarRating = adContainer.findViewById(R.id.ad_stars);
 
-        VponNativeAd.downloadAndDisplayImage(adData.getIcon(), nativeAdIcon);
         // Use VponNativeAd.downloadAndDisplayImage to display icon in your custom ad layout
+        VponNativeAd.downloadAndDisplayImage(adData.getIcon(), nativeAdIcon);
 
         nativeAdTitle.setText(adData.getTitle());
         if (adData.getBody() != null) {
