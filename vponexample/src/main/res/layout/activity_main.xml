@@ -1,5 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-
+    android:gravity="center_horizontal"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,11 +10,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Banner"
-        android:id="@+id/button1" />
+        android:id="@+id/request_banner_button" />
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Interstitial"
-        android:id="@+id/button2" />
+        android:id="@+id/request_is_button" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Native"
+        android:id="@+id/request_native_button" />
+
 </LinearLayout>
