@@ -41,5 +41,5 @@ dependencies {
 
     implementation 'com.squareup.retrofit2:retrofit:2.6.2'
     implementation files('libs/vpadn-sdk-obf511.aar')
-    implementation project(':admob-adapter')
+    implementation files('libs/admob-adapter-2.0.1.aar')
 }

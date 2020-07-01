@@ -23,6 +23,12 @@ import com.google.android.gms.ads.formats.MediaView;
 import com.google.android.gms.ads.formats.NativeAdOptions;
 import com.google.android.gms.ads.formats.UnifiedNativeAd;
 import com.google.android.gms.ads.formats.UnifiedNativeAdView;
+import com.vpadn.mediation.VpadnAdapter;
+
+import java.util.HashMap;
+
+import static com.vpadn.mediation.VpadnAdapter.AD_CONTENT_DATA;
+import static com.vpadn.mediation.VpadnAdapter.AD_CONTENT_URL;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,9 +36,9 @@ public class MainActivity extends AppCompatActivity {
     private InterstitialAd interstitial;
     private AdLoader adLoader;
     private UnifiedNativeAdView unifiedNativeAdView;
-    private String MY_AD_UNIT_ID = "ca-app-pub-3940256099942544/6300978111";//TODO SET YOUR AD_UNIT_ID here
-    private String MY_INTERSTITIAL_UNIT_ID = "ca-app-pub-3940256099942544/1033173712";////TODO SET YOUR AD_UNIT_ID here
-    private String MY_NATIVE_UNIT_ID = "ca-app-pub-3940256099942544/2247696110";////TODO SET YOUR AD_UNIT_ID here
+    private String MY_BANNER_UNIT_ID = "";//TODO SET YOUR AD_UNIT_ID here
+    private String MY_INTERSTITIAL_UNIT_ID = "";////TODO SET YOUR AD_UNIT_ID here
+    private String MY_NATIVE_UNIT_ID = "";////TODO SET YOUR AD_UNIT_ID here
     private LinearLayout adLayout;
 
 
@@ -78,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
 
         adView = new AdView(this);
         adView.setAdSize(AdSize.BANNER);
-        adView.setAdUnitId(MY_AD_UNIT_ID);
+        adView.setAdUnitId(MY_BANNER_UNIT_ID);
 
         interstitial = new InterstitialAd(this);
         interstitial.setAdUnitId(MY_INTERSTITIAL_UNIT_ID);
@@ -95,9 +101,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void doBannerAd() {
-        AdRequest adRequest = new AdRequest.Builder()
-                .build();
-        adView.loadAd(adRequest);
         adView.setAdListener(new AdListener() {
             @Override
             public void onAdLoaded() {
@@ -119,12 +122,10 @@ public class MainActivity extends AppCompatActivity {
             public void onAdLeftApplication() {
             }
         });
-
+        adView.loadAd(buildAdRequest(false));
     }
 
     private void doInterstitialAd() {
-        AdRequest request = new AdRequest.Builder()
-                .build();
         interstitial.setAdListener(new AdListener() {
             @Override
             public void onAdLoaded() {
@@ -147,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
             public void onAdLeftApplication() {
             }
         });
-        interstitial.loadAd(request);
+        interstitial.loadAd(buildAdRequest(false));
     }
 
     private void doNativeAd() {
@@ -177,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
                         .build())
                 .build();
 
-        adLoader.loadAd(new AdRequest.Builder().build());
+        adLoader.loadAd(buildAdRequest(true));
     }
 
     /**
@@ -191,6 +192,27 @@ public class MainActivity extends AppCompatActivity {
             adView = null;
         }
         super.onDestroy();
+    }
+
+    private AdRequest buildAdRequest(boolean isNativeAd){
+        AdRequest.Builder builder = new AdRequest.Builder();
+
+        //optional
+        Bundle bundle = new Bundle();
+        HashMap<String, Object> contentData = new HashMap<>();
+        contentData.put("key1", "Vpon");
+        contentData.put("key2", 1.2);
+        contentData.put("key3", true);
+        bundle.putSerializable(AD_CONTENT_DATA, contentData);
+        bundle.putSerializable(AD_CONTENT_URL, "https://www.vpon.com/zh-hant/");
+        if(isNativeAd) {
+            builder.addCustomEventExtrasBundle(VpadnAdapter.class, bundle);
+        }else {
+            builder.addNetworkExtrasBundle(VpadnAdapter.class, bundle);
+        }
+        //
+
+        return builder.build();
     }
 
     private void populateUnifiedNativeAdView(UnifiedNativeAd nativeAd, UnifiedNativeAdView adView) {
