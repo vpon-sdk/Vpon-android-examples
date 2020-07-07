@@ -53,8 +53,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        MobileAds.initialize(this);
-
         // button1 for banner and button for IS
         BannerButton = findViewById(R.id.banner_button);
         BannerButton.setOnClickListener(new View.OnClickListener() {

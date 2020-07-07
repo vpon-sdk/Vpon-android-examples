@@ -45,8 +45,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        VponMobileAds.initialize(this);
-
         bannerButton = findViewById(R.id.request_banner_button);
         bannerButton.setOnClickListener(new View.OnClickListener() {
             @Override
