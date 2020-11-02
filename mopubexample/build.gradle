@@ -53,5 +53,5 @@ dependencies {
 
     implementation 'com.google.android.gms:play-services-ads-identifier:17.0.0'
     implementation 'com.squareup.retrofit2:retrofit:2.6.2'
-    implementation files('libs/vpadn-sdk-obf511-90700202-2007091552-b10b9fd.aar')
+    implementation files('libs/vpadn-sdk-obf517-20110202-2011021417-2436d8a.aar')
 }
