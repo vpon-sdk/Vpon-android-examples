@@ -16,6 +16,8 @@ import com.mopub.mobileads.MoPubErrorCode;
 import com.mopub.mobileads.MoPubInterstitial;
 import com.mopub.mobileads.MoPubView;
 import com.mopub.mobileads.VponAdapterConfiguration;
+import com.mopub.mobileads.VponNativeAdRenderer;
+import com.mopub.mobileads.VponViewBinder;
 import com.mopub.nativeads.AdapterHelper;
 import com.mopub.nativeads.MoPubNative;
 import com.mopub.nativeads.MoPubStaticNativeAdRenderer;
@@ -57,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
     private String MY_BANNER_UNIT_ID = "";//TODO SET YOUR AD_UNIT_ID here
     private String MY_INTERSTITIAL_UNIT_ID = "";////TODO SET YOUR AD_UNIT_ID here
     private String MY_NATIVE_UNIT_ID = "";////TODO SET YOUR AD_UNIT_ID here
+
     private LinearLayout adLayout;
 
     private Button BannerButton;
@@ -205,7 +208,7 @@ public class MainActivity extends AppCompatActivity {
 
         moPubNative = new MoPubNative(this, MY_NATIVE_UNIT_ID, moPubNativeNetworkListener);
 
-        ViewBinder viewBinder = new ViewBinder.Builder(R.layout.mopub_native_layout)
+        VponViewBinder vponViewBinder = new VponViewBinder.Builder(R.layout.mopub_native_layout)
                 .mainImageId(R.id.native_main_image)
                 .iconImageId(R.id.native_icon_image)
                 .titleId(R.id.native_title)
@@ -214,8 +217,9 @@ public class MainActivity extends AppCompatActivity {
                 .privacyInformationIconImageId(R.id.native_privacy_information_icon_image)
                 .build();
 
-        MoPubStaticNativeAdRenderer moPubStaticNativeAdRenderer = new MoPubStaticNativeAdRenderer(viewBinder);
-        moPubNative.registerAdRenderer(moPubStaticNativeAdRenderer);
+        VponNativeAdRenderer vponNativeAdRenderer = new VponNativeAdRenderer(vponViewBinder);
+
+        moPubNative.registerAdRenderer(vponNativeAdRenderer);
 
         //optional, for setting content url & content url
         moPubNative.setLocalExtras(getExtraData());
