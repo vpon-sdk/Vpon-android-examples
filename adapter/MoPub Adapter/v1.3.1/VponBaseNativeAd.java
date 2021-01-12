@@ -152,6 +152,18 @@ public class VponBaseNativeAd  extends BaseNativeAd {
             public void onAdLoaded() {
                 MoPubLog.log(LT, MoPubLog.AdLogEvent.LOAD_SUCCESS, "onAdLoaded");
             }
+
+            @Override
+            public void onAdImpression() {
+                MoPubLog.log(LT, MoPubLog.AdLogEvent.CUSTOM, "onAdImpression");
+                notifyAdImpressed();
+            }
+
+            @Override
+            public void onAdClicked() {
+                MoPubLog.log(LT, MoPubLog.AdLogEvent.CLICKED, "onAdClicked");
+                notifyAdClicked();
+            }
         });
 
         vponNativeAd.withNativeAdLoadedListener(new VponNativeAd.OnNativeAdLoadedListener() {

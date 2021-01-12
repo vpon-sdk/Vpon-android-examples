@@ -15,7 +15,7 @@ public class VponAdapterConfiguration extends BaseAdapterConfiguration {
     @NonNull
     @Override
     public String getAdapterVersion() {
-        return "v1.3.0";
+        return "v1.3.1";
     }
 
     @Nullable
