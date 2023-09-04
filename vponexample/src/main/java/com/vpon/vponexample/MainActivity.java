@@ -261,7 +261,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
         adContainer.setVisibility(View.VISIBLE);
+
         // Register your view for click interaction
+        // Need to be called "after" nativeMediaView.setNativeAd
         nativeAd.registerViewForInteraction(adContainer);
     }
 }
