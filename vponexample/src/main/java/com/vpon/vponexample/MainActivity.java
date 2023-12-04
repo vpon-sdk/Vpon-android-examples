@@ -9,6 +9,11 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import com.vpon.ads.VponAdListener;
 import com.vpon.ads.VponAdLoader;
 import com.vpon.ads.VponAdRequest;
@@ -18,15 +23,9 @@ import com.vpon.ads.VponFullScreenContentCallback;
 import com.vpon.ads.VponInterstitialAd;
 import com.vpon.ads.VponInterstitialAdLoadCallback;
 import com.vpon.ads.VponMediaView;
-import com.vpon.ads.VponMobileAds;
 import com.vpon.ads.VponNativeAd;
 
 import java.util.HashMap;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,21 +36,16 @@ public class MainActivity extends AppCompatActivity {
     private String MY_BANNER_UNIT_ID = "8a80854b6a90b5bc016ad81c2a136532";//TODO SET YOUR AD_UNIT_ID here
     private String MY_INTERSTITIAL_UNIT_ID = "8a80854b6a90b5bc016ad81c64786533";////TODO SET YOUR AD_UNIT_ID here
     private String MY_NATIVE_UNIT_ID = "8a80854b6a90b5bc016ad81ca1336534";////TODO SET YOUR AD_UNIT_ID here
-    private LinearLayout adLayout;
     private ConstraintLayout nativeAdContainer;
-
-    // In this sample, we will show you the banner and IS ads
-    // by onclicks. Don't forget to import the SDK!
-    private Button bannerButton;
-    private Button interstitialButton;
-    private Button nativeAdButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        bannerButton = findViewById(R.id.request_banner_button);
+        // In this sample, we will show you the banner and IS ads
+        // by onclicks. Don't forget to import the SDK!
+        Button bannerButton = findViewById(R.id.request_banner_button);
         bannerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        interstitialButton = findViewById(R.id.request_is_button);
+        Button interstitialButton = findViewById(R.id.request_is_button);
         interstitialButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        nativeAdButton = findViewById(R.id.request_native_button);
+        Button nativeAdButton = findViewById(R.id.request_native_button);
         nativeAdButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Add the AdView to the view hierarchy. The view will have no size
         // until the ad is loaded.
-        adLayout = findViewById(R.id.container);
+        LinearLayout adLayout = findViewById(R.id.container);
         adLayout.addView(adView);
         // start loading the ad in the background
 
@@ -218,15 +212,6 @@ public class MainActivity extends AppCompatActivity {
         return builder.build();
     }
 
-    private ImageView nativeAdIcon = null;
-    private TextView nativeAdTitle = null;
-    private TextView nativeAdBody = null;
-
-    private VponMediaView nativeAdMedia = null;
-
-    private TextView nativeAdSocialContext = null;
-    private Button nativeAdCallToAction = null;
-    private RatingBar nativeAdStarRating = null;
 
     private void setNativeAdData(VponNativeAd vponNativeAd, View adContainer) {
         ImageView nativeAdIcon = adContainer.findViewById(R.id.ad_app_icon);
