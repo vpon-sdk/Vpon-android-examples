@@ -2,18 +2,18 @@ repositories {
     google()
     jcenter()
     maven {
-        url 'https://dl.bintray.com/vpon-sdk/maven'
+        url 'https://m.vpon.com/sdk/android/maven'
     }
 }
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 33
 
     defaultConfig {
         applicationId "com.vpon.vponexample"
         minSdkVersion 21
-        targetSdkVersion 29
+        targetSdkVersion 33
         versionCode 1
         versionName "1.0"
 
@@ -41,7 +41,7 @@ dependencies {
 
     implementation 'com.squareup.retrofit2:retrofit:2.6.2'
 
-    implementation files('libs/vpadn-sdk-obf-5_4_6-31203202-2302131403-1b06646a.aar')
+    implementation files('libs/vpadn-sdk-obf-5_5_2-10213202-2312011751-8fcfb2e3.aar')
     implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.5.30'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0'
 
