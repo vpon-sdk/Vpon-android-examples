@@ -29,13 +29,13 @@ import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
-    private VponBanner adView;
-    private VponInterstitialAd interstitial;
-    private VponNativeAd nativeAd;
+    private VponBanner vponBanner;
+    private VponInterstitialAd vponInterstitialAd;
+    private VponNativeAd vponNativeAd;
     private VponAdLoader vponAdLoader;
-    private String MY_BANNER_UNIT_ID = "8a80854b6a90b5bc016ad81c2a136532";//TODO SET YOUR AD_UNIT_ID here
-    private String MY_INTERSTITIAL_UNIT_ID = "8a80854b6a90b5bc016ad81c64786533";////TODO SET YOUR AD_UNIT_ID here
-    private String MY_NATIVE_UNIT_ID = "8a80854b6a90b5bc016ad81ca1336534";////TODO SET YOUR AD_UNIT_ID here
+    private static final String MY_BANNER_UNIT_ID = "8a80854b6a90b5bc016ad81c2a136532";//TODO SET YOUR AD_UNIT_ID here
+    private static final String MY_INTERSTITIAL_UNIT_ID = "8a80854b6a90b5bc016ad81c64786533";////TODO SET YOUR AD_UNIT_ID here
+    private static final String MY_NATIVE_UNIT_ID = "8a80854b6a90b5bc016ad81ca1336534";////TODO SET YOUR AD_UNIT_ID here
     private ConstraintLayout nativeAdContainer;
 
     @Override
@@ -44,43 +44,29 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // In this sample, we will show you the banner and IS ads
-        // by onclicks. Don't forget to import the SDK!
+        // by onclick. Don't forget to import the SDK!
         Button bannerButton = findViewById(R.id.request_banner_button);
-        bannerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                doBannerAd();
-            }
-        });
+        bannerButton.setOnClickListener(v -> doBannerAd());
 
         Button interstitialButton = findViewById(R.id.request_is_button);
-        interstitialButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                doInterstitialAd();
-            }
-        });
+        interstitialButton.setOnClickListener(v -> doInterstitialAd());
 
         Button nativeAdButton = findViewById(R.id.request_native_button);
-        nativeAdButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                doNativeAd();
-            }
-        });
+        nativeAdButton.setOnClickListener(v -> doNativeAd());
 
         // Create an ad.
 
-        adView = new VponBanner(this, MY_BANNER_UNIT_ID, VponAdSize.BANNER);
-
+        vponBanner = new VponBanner(this);
 
         vponAdLoader = new VponAdLoader.Builder(this, MY_NATIVE_UNIT_ID)
                 .forNativeAd(new VponNativeAd.OnNativeAdLoadedListener() {
                     @Override
                     public void onNativeAdLoaded(@Nullable VponNativeAd vponNativeAd) {
-                        nativeAd = vponNativeAd;
+                        MainActivity.this.vponNativeAd = vponNativeAd;
                         // Set ad datas to your custom ad layout
-                        setNativeAdData(vponNativeAd, nativeAdContainer);
+                        if(vponNativeAd != null) {
+                            setNativeAdData(vponNativeAd, nativeAdContainer);
+                        }
                     }
                 }).build();
 
@@ -88,19 +74,20 @@ public class MainActivity extends AppCompatActivity {
         // Add the AdView to the view hierarchy. The view will have no size
         // until the ad is loaded.
         LinearLayout adLayout = findViewById(R.id.container);
-        adLayout.addView(adView);
+        adLayout.addView(vponBanner);
         // start loading the ad in the background
 
 
         // Inflate your custom ad layout for native ad
-        LayoutInflater.from(this).inflate(R.layout.layout_native_ad_template, adLayout, true);
-        nativeAdContainer = findViewById(R.id.native_ad_container);
+        View view = LayoutInflater.from(this).inflate(R.layout.layout_native_ad_template
+                , adLayout, true);
+        nativeAdContainer = view.findViewById(R.id.native_ad_container);
     }
 
     private void doBannerAd(){
-        VponAdRequest adRequest = new VponAdRequest.Builder()
-                .build();
-        adView.setAdListener(new VponAdListener() {
+        vponBanner.setLicenseKey(MY_BANNER_UNIT_ID);
+        vponBanner.setAdSize(VponAdSize.IAB_MRECT);
+        vponBanner.setAdListener(new VponAdListener() {
             @Override
             public void onAdLoaded() {
             }
@@ -121,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
             public void onAdLeftApplication() {
             }
         });
-        adView.loadAd(buildAdRequest());
+        vponBanner.loadAd(buildAdRequest());
     }
 
     private void doInterstitialAd() {
@@ -134,21 +121,22 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onAdLoaded(VponInterstitialAd vponInterstitialAd) {
-                        interstitial = vponInterstitialAd;
-                        interstitial.setFullScreenContentCallback(new VponFullScreenContentCallback() {
+                        MainActivity.this.vponInterstitialAd = vponInterstitialAd;
+                        MainActivity.this.vponInterstitialAd.setFullScreenContentCallback(
+                                new VponFullScreenContentCallback() {
                             @Override
                             public void onAdFailedToShowFullScreenContent(int i) {
                                 super.onAdFailedToShowFullScreenContent(i);
-                                interstitial = null;
+                                MainActivity.this.vponInterstitialAd = null;
                             }
 
                             @Override
                             public void onAdShowedFullScreenContent() {
                                 super.onAdShowedFullScreenContent();
-                                interstitial = null;
+                                MainActivity.this.vponInterstitialAd = null;
                             }
                         });
-                        interstitial.show();
+                        MainActivity.this.vponInterstitialAd.show();
                     }
                 });
     }
@@ -159,35 +147,18 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onPause() {
-        if (adView != null) {
-            adView.resume();
-        }
-        super.onPause();
-    }
-
-
-    @Override
-    protected void onResume() {
-        if (adView != null) {
-            adView.resume();
-        }
-        super.onResume();
-    }
-
     /** Called before the activity is destroyed. */
     @Override
     public void onDestroy() {
         // Destroy the AdView.
-        if (adView != null) {
-            adView.destroy();
-            adView = null;
+        if (vponBanner != null) {
+            vponBanner.destroy();
+            vponBanner = null;
         }
 
-        if (nativeAd != null){
-            nativeAd.destroy();
-            nativeAd = null;
+        if (vponNativeAd != null){
+            vponNativeAd.destroy();
+            vponNativeAd = null;
         }
 
         super.onDestroy();
@@ -197,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
         VponAdRequest.Builder builder = new VponAdRequest.Builder();
 
         //this only works for banner
-        builder.setAutoRefresh(true);
+        builder.setAutoRefresh(false);
 
         //optional
         HashMap<String, Object> contentData = new HashMap<>();

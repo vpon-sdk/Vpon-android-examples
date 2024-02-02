@@ -15,11 +15,15 @@
         android:theme="@style/AppTheme">
 
         <!-- Fill in your AdMob App ID below -->
+<!--        <meta-data-->
+<!--            android:name="com.google.android.gms.ads.APPLICATION_ID"-->
+<!--            android:value="ca-app-pub-3940256099942544~3347511713"/>-->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value=""/>
+            android:value="ca-app-pub-7987617251221645~9624475241"/>
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,11 +31,6 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name="com.vpon.ads.VponAdActivity"
-            android:configChanges="orientation|keyboardHidden|navigation|keyboard|screenLayout|uiMode|screenSize|smallestScreenSize"
-            android:hardwareAccelerated="true"
-            android:theme="@android:style/Theme.Translucent"></activity>
     </application>
 
 </manifest>

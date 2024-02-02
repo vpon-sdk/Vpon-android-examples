@@ -1,22 +1,38 @@
 package com.vpon.dfpexample;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdSize;
-import com.google.android.gms.ads.doubleclick.PublisherAdRequest;
-import com.google.android.gms.ads.doubleclick.PublisherAdView;
-import com.google.android.gms.ads.doubleclick.PublisherInterstitialAd;
+import com.google.android.gms.ads.FullScreenContentCallback;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.admanager.AdManagerAdRequest;
+import com.google.android.gms.ads.admanager.AdManagerAdView;
+import com.google.android.gms.ads.admanager.AdManagerInterstitialAd;
+import com.google.android.gms.ads.admanager.AdManagerInterstitialAdLoadCallback;
+import com.google.android.gms.ads.identifier.AdvertisingIdClient;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity {
 
-    private PublisherAdView adView;
-    private PublisherInterstitialAd interstitial;
+    private static final String LT = "AdManagerSample";
+
+    private AdManagerAdView adView = null;
+    private AdManagerInterstitialAd interstitial= null;
     private String MY_AD_UNIT_ID = "/6499/example/banner";//TODO SET YOUR AD_UNIT_ID here
     private String MY_INTERSTITIAL_UNIT_ID = "/6499/example/interstitial";////TODO SET YOUR AD_UNIT_ID here
     private LinearLayout adBannerLayout;
@@ -26,37 +42,34 @@ public class MainActivity extends AppCompatActivity {
     // by onclicks. Don't forget to import the SDK!
     private Button button1;
     private Button button2;
+    private TextView labelAdid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getAdid(this);
+
+        labelAdid = findViewById(R.id.adid);
 
         // button1 for banner and button for IS
         button1 = findViewById(R.id.button1);
-        button1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                doBannerAd();
-            }
-        });
+        button1.setOnClickListener(v -> doBannerAd());
 
         button2 = findViewById(R.id.button2);
-        button2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        button2.setOnClickListener(view -> {
+            if (interstitial != null) {
+                interstitial.show(this);
+            } else {
                 doInterstitialAd();
             }
         });
 
+
         // Create an ad.
-        adView = new PublisherAdView(this);
+        adView = new AdManagerAdView(this);
         adView.setAdSizes(AdSize.BANNER);
         adView.setAdUnitId(MY_AD_UNIT_ID);
-
-        interstitial = new PublisherInterstitialAd(this);
-        interstitial.setAdUnitId(MY_INTERSTITIAL_UNIT_ID);
-
 
         // Add the AdView to the view hierarchy. The view will have no size
         // until the ad is loaded.
@@ -66,61 +79,122 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void doBannerAd(){
-        PublisherAdRequest adRequest = new PublisherAdRequest.Builder()
-                .setManualImpressionsEnabled(true)
+    private void doBannerAd() {
+        AdManagerAdRequest adRequest = new AdManagerAdRequest.Builder()
                 .build();
-        adView.loadAd(adRequest);
         adView.setAdListener(new AdListener() {
             @Override
-            public void onAdLoaded() {
-            }
-
-            @Override
-            public void onAdFailedToLoad(int errorCode) {
-            }
-
-            @Override
-            public void onAdOpened() {
+            public void onAdClicked() {
+                super.onAdClicked();
+                Log.e(LT, "onAdClicked invoked!!");
             }
 
             @Override
             public void onAdClosed() {
+                super.onAdClosed();
+                Log.e(LT, "onAdClosed invoked!!");
             }
 
             @Override
-            public void onAdLeftApplication() {
+            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                super.onAdFailedToLoad(loadAdError);
+                Log.e(LT, "onAdFailedToLoad(" + loadAdError.getMessage() + ") invoked!!");
+            }
+
+            @Override
+            public void onAdImpression() {
+                super.onAdImpression();
+                Log.e(LT, "onAdImpression invoked!!");
+            }
+
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+                Log.e(LT, "onAdLoaded invoked!!");
+            }
+
+            @Override
+            public void onAdOpened() {
+                super.onAdOpened();
+                Log.e(LT, "onAdOpened invoked!!");
+            }
+
+            @Override
+            public void onAdSwipeGestureClicked() {
+                super.onAdSwipeGestureClicked();
+                Log.e(LT, "onAdSwipeGestureClicked invoked!!");
             }
         });
-
+        adView.loadAd(adRequest);
     }
 
     private void doInterstitialAd() {
-        PublisherAdRequest request = new PublisherAdRequest.Builder()
-                .setManualImpressionsEnabled(true)
+        AdManagerAdRequest adRequest = new AdManagerAdRequest.Builder()
                 .build();
-        interstitial.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded(){
-                interstitial.show();
-            }
 
-            @Override
-            public void onAdFailedToLoad(int errorCode){}
+        AdManagerInterstitialAd.load(this, MY_INTERSTITIAL_UNIT_ID
+                , adRequest, new AdManagerInterstitialAdLoadCallback() {
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        super.onAdFailedToLoad(loadAdError);
+                        Log.e(LT, "onAdFailedToLoad(" + loadAdError.getMessage() + ") invoked!!");
+                    }
 
-            @Override
-            public void onAdOpened(){}
+                    @Override
+                    public void onAdLoaded(@NonNull AdManagerInterstitialAd adManagerInterstitialAd) {
+                        super.onAdLoaded(adManagerInterstitialAd);
+                        Log.e(LT, "onAdLoaded invoked!!");
+                        if (button2 != null) {
+                            button2.setText("Show Interstitial");
+                        }
+                        interstitial = adManagerInterstitialAd;
+                        interstitial.setAppEventListener((name, data) -> {
+                            Log.e(LT, "onAppEvent(" + name + "/" + data + ") invoked!!");
+                        });
+                        interstitial.setFullScreenContentCallback(new FullScreenContentCallback() {
+                            @Override
+                            public void onAdClicked() {
+                                super.onAdClicked();
+                                Log.e(LT, "onAdClicked invoked!!");
+                            }
 
-            @Override
-            public void onAdClosed(){}
+                            @Override
+                            public void onAdDismissedFullScreenContent() {
+                                super.onAdDismissedFullScreenContent();
+                                Log.e(LT, "onAdDismissedFullScreenContent invoked!!");
+                                interstitial = null;
+                                if (button2 != null) {
+                                    button2.setText("Interstitial");
+                                }
+                            }
 
-            @Override
-            public void onAdLeftApplication(){}
-        });
-        interstitial.loadAd(request);
+                            @Override
+                            public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
+                                super.onAdFailedToShowFullScreenContent(adError);
+                                Log.e(LT, "onAdFailedToShowFullScreenContent(" + adError.getMessage() + ") invoked!!");
+                                interstitial = null;
+                                button2.setText("Interstitial");
+                            }
+
+                            @Override
+                            public void onAdImpression() {
+                                super.onAdImpression();
+                                Log.e(LT, "onAdImpression invoked!!");
+                            }
+
+                            @Override
+                            public void onAdShowedFullScreenContent() {
+                                super.onAdShowedFullScreenContent();
+                                Log.e(LT, "onAdShowedFullScreenContent invoked!!");
+                            }
+                        });
+                    }
+                });
     }
 
-    /** Called before the activity is destroyed. */
+    /**
+     * Called before the activity is destroyed.
+     */
     @Override
     public void onDestroy() {
         // Destroy the AdView.
@@ -130,4 +204,27 @@ public class MainActivity extends AppCompatActivity {
         }
         super.onDestroy();
     }
+
+    private void getAdid(Context context) {
+        Log.e(LT, "getAdid invoked!!");
+        ExecutorService backgroundExecutor = Executors.newSingleThreadExecutor();
+        backgroundExecutor.execute(() -> {
+            try {
+                final AdvertisingIdClient.Info adInfo = AdvertisingIdClient
+                        .getAdvertisingIdInfo(context);
+                final String thisAdid = adInfo.getId();
+                Log.e(LT, "current adid : " + thisAdid);
+                Handler handler = new Handler(Looper.getMainLooper());
+                handler.post(() -> {
+                    if (labelAdid != null) {
+                        labelAdid.setText(thisAdid);
+                        labelAdid.setVisibility(View.VISIBLE);
+                    }
+                });
+            } catch (Exception e) {
+                Log.e(LT, e.getMessage(), e);
+            }
+        });
+    }
+
 }

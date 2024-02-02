@@ -1,6 +1,6 @@
 repositories {
     google()
-    jcenter()
+    mavenCentral()
     maven {
         url 'https://m.vpon.com/sdk/android/maven'
     }
@@ -8,12 +8,12 @@ repositories {
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 34
 
     defaultConfig {
         applicationId "com.vpon.admobexample"
-        minSdkVersion 18
-        targetSdkVersion 29
+        minSdkVersion 21
+        targetSdkVersion 34
         versionCode 1
         versionName "1.0"
 
@@ -29,17 +29,16 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    testImplementation 'junit:junit:4.13'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    implementation 'com.google.android.material:material:1.11.0'
 
-    implementation 'com.google.android.gms:play-services-ads:19.0.0'
+    implementation 'com.google.android.gms:play-services-ads:22.6.0'
 
-    implementation 'com.squareup.retrofit2:retrofit:2.6.2'
-    implementation files('libs/vpadn-sdk-obf520-62201202-2102261154-ff760b4.aar')
-    implementation files('libs/admob-adapter-2.0.4.aar')
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.vpon:vpadnSDK:5.6.0'
+    implementation project(':admob-adapter')
+
+//    implementation 'com.squareup.retrofit2:retrofit:2.6.2'
+//    implementation files('libs/vpadn-sdk-obf520-62201202-2102261154-ff760b4.aar')
+//    implementation files('libs/admob-adapter-2.0.4.aar')
 }
