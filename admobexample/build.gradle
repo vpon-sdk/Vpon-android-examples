@@ -16,8 +16,6 @@ android {
         targetSdkVersion 34
         versionCode 1
         versionName "1.0"
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -39,6 +37,4 @@ dependencies {
     implementation project(':admob-adapter')
 
 //    implementation 'com.squareup.retrofit2:retrofit:2.6.2'
-//    implementation files('libs/vpadn-sdk-obf520-62201202-2102261154-ff760b4.aar')
-//    implementation files('libs/admob-adapter-2.0.4.aar')
 }
