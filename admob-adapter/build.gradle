@@ -1,2 +1,2 @@
 configurations.maybeCreate("default")
-artifacts.add("default", file('admob-adapter-v2.0.1.aar'))
+artifacts.add("default", file('admob-adapter-v2.2.0.aar'))
