@@ -1,11 +1,7 @@
 package com.vpon.dfpexample;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -22,10 +18,6 @@ import com.google.android.gms.ads.admanager.AdManagerAdRequest;
 import com.google.android.gms.ads.admanager.AdManagerAdView;
 import com.google.android.gms.ads.admanager.AdManagerInterstitialAd;
 import com.google.android.gms.ads.admanager.AdManagerInterstitialAdLoadCallback;
-import com.google.android.gms.ads.identifier.AdvertisingIdClient;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -48,9 +40,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getAdid(this);
-
-        labelAdid = findViewById(R.id.adid);
 
         // button1 for banner and button for IS
         button1 = findViewById(R.id.button1);
@@ -119,11 +108,6 @@ public class MainActivity extends AppCompatActivity {
                 Log.e(LT, "onAdOpened invoked!!");
             }
 
-            @Override
-            public void onAdSwipeGestureClicked() {
-                super.onAdSwipeGestureClicked();
-                Log.e(LT, "onAdSwipeGestureClicked invoked!!");
-            }
         });
         adView.loadAd(adRequest);
     }
@@ -204,27 +188,4 @@ public class MainActivity extends AppCompatActivity {
         }
         super.onDestroy();
     }
-
-    private void getAdid(Context context) {
-        Log.e(LT, "getAdid invoked!!");
-        ExecutorService backgroundExecutor = Executors.newSingleThreadExecutor();
-        backgroundExecutor.execute(() -> {
-            try {
-                final AdvertisingIdClient.Info adInfo = AdvertisingIdClient
-                        .getAdvertisingIdInfo(context);
-                final String thisAdid = adInfo.getId();
-                Log.e(LT, "current adid : " + thisAdid);
-                Handler handler = new Handler(Looper.getMainLooper());
-                handler.post(() -> {
-                    if (labelAdid != null) {
-                        labelAdid.setText(thisAdid);
-                        labelAdid.setVisibility(View.VISIBLE);
-                    }
-                });
-            } catch (Exception e) {
-                Log.e(LT, e.getMessage(), e);
-            }
-        });
-    }
-
 }

@@ -186,11 +186,6 @@ public class MainActivity extends AppCompatActivity {
             Log.e(LT, "onAdOpened invoked!!");
         }
 
-        @Override
-        public void onAdSwipeGestureClicked() {
-            super.onAdSwipeGestureClicked();
-            Log.e(LT, "onAdSwipeGestureClicked invoked!!");
-        }
     };
 
     private final NativeAd.OnNativeAdLoadedListener onNativeAdLoadedListener

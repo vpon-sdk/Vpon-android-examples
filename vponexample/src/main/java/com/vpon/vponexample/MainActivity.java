@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private VponInterstitialAd vponInterstitialAd;
     private VponNativeAd vponNativeAd;
     private VponAdLoader vponAdLoader;
-    private static final String MY_BANNER_UNIT_ID = "8a80854b6a90b5bc016ad81c2a136532";//TODO SET YOUR AD_UNIT_ID here
+    private static final String MY_BANNER_UNIT_ID = "8a80854b75ab2b0101761cfb398671c6";//TODO SET YOUR AD_UNIT_ID here
     private static final String MY_INTERSTITIAL_UNIT_ID = "8a80854b6a90b5bc016ad81c64786533";////TODO SET YOUR AD_UNIT_ID here
     private static final String MY_NATIVE_UNIT_ID = "8a80854b6a90b5bc016ad81ca1336534";////TODO SET YOUR AD_UNIT_ID here
     private ConstraintLayout nativeAdContainer;
@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void doBannerAd(){
         vponBanner.setLicenseKey(MY_BANNER_UNIT_ID);
-        vponBanner.setAdSize(VponAdSize.IAB_MRECT);
+        vponBanner.setAdSize(VponAdSize.BANNER);
         vponBanner.setAdListener(new VponAdListener() {
             @Override
             public void onAdLoaded() {
@@ -188,6 +188,7 @@ public class MainActivity extends AppCompatActivity {
         ImageView nativeAdIcon = adContainer.findViewById(R.id.ad_app_icon);
         TextView nativeAdTitle = adContainer.findViewById(R.id.ad_headline);
         TextView nativeAdBody = adContainer.findViewById(R.id.ad_body);
+        TextView nativeAdLabel = adContainer.findViewById(R.id.ad_label);
         VponMediaView nativeMediaView = adContainer.findViewById(R.id.ad_media_view);
         Button nativeAdCallToAction = adContainer.findViewById(R.id.ad_call_to_action);
         RatingBar nativeAdStarRating = adContainer.findViewById(R.id.ad_stars);
@@ -200,6 +201,11 @@ public class MainActivity extends AppCompatActivity {
             nativeAdBody.setText(vponNativeAd.getBody());
         } else {
             nativeAdBody.setVisibility(View.INVISIBLE);
+        }
+        if(vponNativeAd.getAdvertiseLabel() != null){
+            nativeAdLabel.setText(vponNativeAd.getAdvertiseLabel());
+        } else {
+            nativeAdLabel.setVisibility(View.INVISIBLE);
         }
 
         nativeMediaView.setNativeAd(vponNativeAd);
