@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private VponNativeAd vponNativeAd;
     private VponAdLoader vponAdLoader;
     private static final String MY_BANNER_UNIT_ID = "8a80854b75ab2b0101761cfb398671c6";//TODO SET YOUR AD_UNIT_ID here
-    private static final String MY_INTERSTITIAL_UNIT_ID = "8a80854b6a90b5bc016ad81c64786533";////TODO SET YOUR AD_UNIT_ID here
+    private static final String MY_INTERSTITIAL_UNIT_ID = "8a80854b75ab2b0101761cfb968d71c7";////TODO SET YOUR AD_UNIT_ID here
     private static final String MY_NATIVE_UNIT_ID = "8a80854b6a90b5bc016ad81ca1336534";////TODO SET YOUR AD_UNIT_ID here
     private ConstraintLayout nativeAdContainer;
 
