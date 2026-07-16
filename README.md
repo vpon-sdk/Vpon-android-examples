@@ -7,3 +7,4 @@
 |support version | v2.1.0                 | v5.6.0+             | 21.0.0+	             |
 |support version | v2.2.0                 | v5.6.6+             | 21.0.0+	             |
 |support version | v2.3.0                 | v5.7.2+             | 21.0.0+	             |
+|support version | v2.3.2                 | v5.8.0+             | 23.4.0+	             |
