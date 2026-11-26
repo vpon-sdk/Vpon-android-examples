@@ -1,10 +1,7 @@
 # Vpon-android-examples
 
+## Vpon Adapter for AdMob
 
-|                | Vpon Adapter for AdMob | Vpon Ad SDK version | AdMob Mobile Ads SDK |
-|----------------|------------------------|---------------------|----------------------|
-|support version | v2.0.11                | v5.2.0 ~ 5.5.0      | 21.0.0+    	         |
-|support version | v2.1.0                 | v5.6.0+             | 21.0.0+	             |
-|support version | v2.2.0                 | v5.6.6+             | 21.0.0+	             |
-|support version | v2.3.0                 | v5.7.2+             | 21.0.0+	             |
-|support version | v2.3.2                 | v5.8.0+             | 23.4.0+	             |
+The Vpon AdMob mediation adapter is distributed from [AdMobMediationAdapterVpadn-Android](https://github.com/vpon-sdk/AdMobMediationAdapterVpadn-Android). Download the adapter from its [Releases](https://github.com/vpon-sdk/AdMobMediationAdapterVpadn-Android/releases), and see its README for requirements, installation, and version compatibility.
+
+The `admob-adapter` module in this repository includes `admob-adapter-2.3.4.aar` so that the examples build as is.
